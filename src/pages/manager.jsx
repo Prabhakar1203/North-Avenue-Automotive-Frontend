@@ -103,10 +103,9 @@ function Manager() {
         setBuyerData(null);
         setPartsData(null);
     };
-   
 
     return (
-        <div className="w-full h-full flex items-center justify-center p-[200px]">
+        <div className="w-full h-full flex items-center justify-center p-5 md:p-[200px] p-[270px]">
             <div className="absolute max-w-[1400px] mx-auto mt-[150px] flex flex-col p-5">
                 <h1 className="text-gray-550 text-3xl text-center font-bold p-5">Welcome to Manager Page</h1>
                 
@@ -126,7 +125,7 @@ function Manager() {
                 </form>
 
                 {/* Show the car count dashboard */}
-                <div className="grid grid-cols-4 gap-6 mb-12">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                     <div className="bg-green-500 text-white p-6 rounded-lg">
                         <h3 className="text-lg font-semibold">Available Cars</h3>
                         <p className="text-4xl">{availableCarsCount}</p>
@@ -148,159 +147,111 @@ function Manager() {
                 {/* Display modal with grid data when a VIN is searched */}
                 {showModal && (
                     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white w-4/5 h-4/5 p-5 rounded-lg relative">
+                        <div className="bg-white w-11/12 md:w-4/5 h-4/5 max-h-full overflow-auto p-5 rounded-lg relative">
                             <button onClick={closeModal} className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full">Close</button>
-                            <div className="grid grid-cols-4 gap-10 h-full">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
                                 {/* Grid 1: Manager Search by VIN */}
                                 <div className="bg-gray-100 p-5 overflow-auto m-5">
-                                    <h2 className="text-lg font-semibold mb-3 text-center font-bold text-4xl">Vehicles Deatils</h2>
-                                    <table className="table-auto w-full">
-                                        <thead>
-                                           
-                                        </thead>
-                                        <tbody>
-                                        <div style={{ textAlign: 'center' }}>
-                                            {managerData && Object.keys(managerData).map((key) => {
-                                                const value = managerData[key];
-
-                                                // Check if the value is an object
-                                                if (typeof value === 'object' && value !== null) {
-                                                    return (
-                                                        <div key={key}>
-                                                            {Object.keys(value).map((nestedKey) => (
-                                                                <div key={nestedKey}>
-                                                                    {nestedKey}: {value[nestedKey]}
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    );
-                                                }
-
+                                    <h2 className="text-lg font-semibold mb-3 text-center font-bold text-2xl">Vehicle Details</h2>
+                                    <div style={{ textAlign: 'center' }}>
+                                        {managerData && Object.keys(managerData).map((key) => {
+                                            const value = managerData[key];
+                                            if (typeof value === 'object' && value !== null) {
                                                 return (
                                                     <div key={key}>
-                                                        {key}: {value}
+                                                        {Object.keys(value).map((nestedKey) => (
+                                                            <div key={nestedKey}>
+                                                                {nestedKey}: {value[nestedKey]}
+                                                            </div>
+                                                        ))}
                                                     </div>
                                                 );
-                                            })}
-                                        </div>
-
-                                        </tbody>
-                                    </table>
+                                            }
+                                            return (
+                                                <div key={key}>
+                                                    {key}: {value}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
                                 
                                 {/* Grid 2: Seller Details by VIN */}
                                 <div className="bg-gray-100 p-5 overflow-auto">
-                                    <h2 className="text-lg font-semibold mb-3 text-center font-bold text-4xl ">Seller Details</h2>
-                                    <table className="table-auto w-full">
-                                        <thead>
-                                          
-                                        </thead>
-                                        <tbody>
-                                
-                                        <div style={{ textAlign: 'center' }}>
-                                            {sellerData && Object.keys(sellerData).map((key) => {
-                                                const value = sellerData[key];
-
-                                                // Check if the value is an object
-                                                if (typeof value === 'object' && value !== null) {
-                                                    return (
-                                                        <div key={key}>
-                                                            {Object.keys(value).map((nestedKey) => (
-                                                                <div key={nestedKey}>
-                                                                    {nestedKey}: {value[nestedKey]}
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    );
-                                                }
-
+                                    <h2 className="text-lg font-semibold mb-3 text-center font-bold text-2xl">Seller Details</h2>
+                                    <div style={{ textAlign: 'center' }}>
+                                        {sellerData && Object.keys(sellerData).map((key) => {
+                                            const value = sellerData[key];
+                                            if (typeof value === 'object' && value !== null) {
                                                 return (
                                                     <div key={key}>
-                                                        {key}: {value}
+                                                        {Object.keys(value).map((nestedKey) => (
+                                                            <div key={nestedKey}>
+                                                                {nestedKey}: {value[nestedKey]}
+                                                            </div>
+                                                        ))}
                                                     </div>
                                                 );
-                                            })}
-                                        </div>
-
-                                        </tbody>
-                                    </table>
+                                            }
+                                            return (
+                                                <div key={key}>
+                                                    {key}: {value}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
-
+                                
                                 {/* Grid 3: Buyer Details by VIN */}
                                 <div className="bg-gray-100 p-5 overflow-auto">
-                                    <h2 className="text-lg font-semibold mb-3 text-center font-bold text-4xl">Buyer Details </h2>
-                                    <table className="table-auto w-full">
-                                        <thead>
-                                         
-                                        </thead>
-                                        <tbody>
-                        
-
-                                        <div style={{ textAlign: 'center' }}>
-                                            {buyerData && Object.keys(buyerData).map((key) => {
-                                                const value = buyerData[key];
-
-                                                // Check if the value is an object
-                                                if (typeof value === 'object' && value !== null) {
-                                                    return (
-                                                        <div key={key}>
-                                                            {Object.keys(value).map((nestedKey) => (
-                                                                <div key={nestedKey}>
-                                                                    {nestedKey}: {value[nestedKey]}
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    );
-                                                }
-
+                                    <h2 className="text-lg font-semibold mb-3 text-center font-bold text-2xl">Buyer Details</h2>
+                                    <div style={{ textAlign: 'center' }}>
+                                        {buyerData && Object.keys(buyerData).map((key) => {
+                                            const value = buyerData[key];
+                                            if (typeof value === 'object' && value !== null) {
                                                 return (
                                                     <div key={key}>
-                                                        {key}: {value}
+                                                        {Object.keys(value).map((nestedKey) => (
+                                                            <div key={nestedKey}>
+                                                                {nestedKey}: {value[nestedKey]}
+                                                            </div>
+                                                        ))}
                                                     </div>
                                                 );
-                                            })}
-                                        </div>
-
-                                        </tbody>
-                                    </table>
+                                            }
+                                            return (
+                                                <div key={key}>
+                                                    {key}: {value}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
 
-                                {/* Grid 4: Parts Details */}
+                                {/* Grid 4: Total Cost of Parts */}
                                 <div className="bg-gray-100 p-5 overflow-auto">
-                                    <h2 className="text-lg font-semibold mb-3 text-center font-bold text-4xl">Parts Cost </h2>
-                                    <table className="table-auto w-full">
-                                        <thead>
-                                           
-                                        </thead>
-                                        <tbody>
-                                        
-                                        <div style={{ textAlign: 'center' }}>
-                                            {partsData && Object.keys(partsData).map((key) => {
-                                                const value = partsData[key];
-
-                                                // Check if the value is an object
-                                                if (typeof value === 'object' && value !== null) {
-                                                    return (
-                                                        <div key={key}>
-                                                            {Object.keys(value).map((nestedKey) => (
-                                                                <div key={nestedKey}>
-                                                                    {nestedKey}: {value[nestedKey]}
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    );
-                                                }
-
+                                    <h2 className="text-lg font-semibold mb-3 text-center font-bold text-2xl">Parts Cost</h2>
+                                    <div style={{ textAlign: 'center' }}>
+                                        {partsData && Object.keys(partsData).map((key) => {
+                                            const value = partsData[key];
+                                            if (typeof value === 'object' && value !== null) {
                                                 return (
                                                     <div key={key}>
-                                                        {key}: {value}
+                                                        {Object.keys(value).map((nestedKey) => (
+                                                            <div key={nestedKey}>
+                                                                {nestedKey}: {value[nestedKey]}
+                                                            </div>
+                                                        ))}
                                                     </div>
                                                 );
-                                            })}
-                                        </div>
-
-                                        </tbody>
-                                    </table>
+                                            }
+                                            return (
+                                                <div key={key}>
+                                                    {key}: {value}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
                             </div>
                         </div>

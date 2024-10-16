@@ -44,9 +44,9 @@ const Navbar = () => {
       console.error("Error during API call:", error); // Log the error
       // Display error message for failed search
       Swal.fire({
-        icon: 'error',
+        icon: 'info',
         title: 'Search Failed',
-        text: error.response?.data?.message || 'An error occurred during the search.',
+        text: error.response?.data?.message || 'No cars matching your search were found.',
       });
     }
   };
@@ -55,13 +55,18 @@ const Navbar = () => {
     <div className="w-full fixed md:z-20 z-20 bg-white shadow-xl">
       <div className="w-full h-[90px] mx-auto max-w-[1400px] flex justify-between items-center">
         <div className="flex justify-between items-center w-full px-4">
-          <div className="text-center">
+        <div className="text-center">
             <Link to={'/home'}>
-              <h2 className="text-colorFour font-bold text-[30px]">North Avenue</h2>
+                <h2 className="font-bold text-green-600 text-[30px]">
+                {/* For small screens, display vertically; for medium and larger, display inline */}
+                <span className="block  md:inline">North</span> {/* Vertical on small, inline on medium+ */}
+                <span className="block md:inline">Avenue</span> {/* Vertical on small, inline on medium+ */}
+                </h2>
             </Link>
-          </div>
+        </div>
 
-          <form onSubmit={handleSearch} className="relative w-full max-w-[450px]">
+
+          <form onSubmit={handleSearch} className="relative w-full md:max-w-[450px] max-w-[200px]">
             <input
               className="p-3 w-full border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition-all duration-200"
               type="text"
@@ -81,7 +86,7 @@ const Navbar = () => {
           <div className="text-center">
             {/* Replace button with Link for navigation */}
             <Link to={'/login'}>
-              <button className="p-3 bg-green-600 text-2xl font-bold w-[150px] rounded-lg text-white transition-all duration-200 hover:bg-green-700">
+              <button className="p-3 bg-green-600 text-2xl font-bold md:w-[150px] w-[80px] rounded-lg text-white transition-all duration-200 hover:bg-green-700">
                 Login
               </button>
             </Link>

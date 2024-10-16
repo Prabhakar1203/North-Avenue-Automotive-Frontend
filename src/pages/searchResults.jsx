@@ -12,7 +12,7 @@ const SearchResults = ({ results }) => {
 
   const handleSellClick = async (vehicle) => {
     const { VIN, Selling_Price } = vehicle;
-  
+
     // Show Swal input form for customer details
     const { value: formValues } = await Swal.fire({
       title: 'Enter Sale Details',
@@ -32,18 +32,18 @@ const SearchResults = ({ results }) => {
         };
       },
     });
-  
+
     if (formValues) {
       try {
-        // 1. Send the data to sell the car, matching the backend's expected keys
+        // Send the data to sell the car, matching the backend's expected keys
         const response = await axios.post('http://localhost:9004/api/sellConfirmation', {
-          Customer_id: formValues.Customer_id,   // Correct key
-          Username: formValues.Username,         // Correct key
-          Selling_Price: formValues.Selling_Price, // Correct key
-          Sold_date: formValues.Sold_date,       // Correct key
-          VIN,                                   // Pass the vehicle VIN
+          Customer_id: formValues.Customer_id,
+          Username: formValues.Username,
+          Selling_Price: formValues.Selling_Price,
+          Sold_date: formValues.Sold_date,
+          VIN, // Pass the vehicle VIN
         });
-  
+
         if (response.data.message === "Car successfully sold and vehicle data updated") {
           // Show success message for the sale operation
           Swal.fire({
@@ -66,11 +66,11 @@ const SearchResults = ({ results }) => {
   };
 
   return (
-    <div className="absolute w-full min-h-screen flex flex-col items-center justify-start bg-gray-100 p-4">
+    <div className="absolute w-full flex flex-col items-center justify-start bg-gray-100 p-4 mx-4">
       <h3 className="text-lg font-bold mb-4">Search Results</h3>
-      
+
       {/* Full-screen flex container with a responsive grid layout */}
-      <div className="grid grid-cols-2  gap-4 w-full max-w-screen-xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 w-full max-w-screen-xl max-h-[500px] overflow-y-auto">
         {results.map((vehicle) => (
           <div
             key={vehicle.VIN}

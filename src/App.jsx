@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import LoginPage from './pages/login';
 import Navbar from './components/Navbar';
-import DashboardNavbar from './pages/DashboardNavbar';
+import DashboardNavbar from './components/DashboardNavbar';
 import InventeryClerk from './pages/InventeryClerk';
 import Manager from './pages/manager';
 import SalesmanHero from './pages/salesmanHero';
@@ -12,6 +12,7 @@ import AverageTimeInInventory from './pages/AverageInventeryTime';
 import AveragePricePerCondition from './pages/AveragePricePerCondition';
 import PartsStatistics from './pages/PartsStatistics';
 import MonthlySales from './pages/MontlhySales';
+// import Dashboard from './pages/Dashboard';
 import PublicRoute from './components/publicRoute';
 import ProtectedRoute from './components/privateRoute';
 function App() {

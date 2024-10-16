@@ -97,7 +97,6 @@ function SalesmanHero() {
         }
     };
 
-
     const handleAddCustomer = async (e) => {
         e.preventDefault();
         console.log("Adding Customer:", customerData);
@@ -146,15 +145,15 @@ function SalesmanHero() {
     
 
     return (
-        <div className="w-full h-full flex items-center justify-center ">
-            <div className="absolute max-w-[1400px] mt-[150px] flex flex-col p-5 mx-auto">
+        <div className="w-full h-full flex items-center justify-center p-4 md:p-10">
+            <div className="relative max-w-[1400px] mt-[50px] flex flex-col p-5 mx-auto">
                 <h1 className="text-gray-550 text-3xl text-center font-bold p-5">Welcome to Salesman Page</h1>
 
                 {/* Render this section only if showResults is false */}
                 {!showResults && (
-                    <div className="flex justify-between gap-[30px] mt-5">
-                        <div>
-                            <form onSubmit={handleSearch} className="relative w-full max-w-[450px]">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 mt-5">
+                        <div className="flex-1">
+                            <form onSubmit={handleSearch} className="relative w-full">
                                 <input
                                     className="p-3 w-full border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition-all duration-200"
                                     type="text"
@@ -169,9 +168,9 @@ function SalesmanHero() {
                             </form>
                         </div>
 
-                        <div className="flex justify-between w-2/3 mx-auto gap-[25px]">
-                            <div>
-                                <form onSubmit={handleCustomer} className="relative w-full max-w-[450px]">
+                        <div className="flex flex-col md:flex-row w-full md:w-auto gap-4">
+                            <div className="flex-1">
+                                <form onSubmit={handleCustomer} className="relative w-full">
                                     <input
                                         className="p-3 w-full border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition-all duration-200"
                                         type="text"
@@ -188,7 +187,7 @@ function SalesmanHero() {
 
                             <button
                                 onClick={() => setShowAddCustomerForm(true)} // Show the form when clicked
-                                className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-700"
+                                className="w-full md:w-auto px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-700"
                             >
                                 Add a Customer
                             </button>
@@ -198,140 +197,143 @@ function SalesmanHero() {
 
                 {/* Conditional rendering of the add customer form */}
                 {!showResults && showAddCustomerForm && (
-                   <div className="absolute  flex justify-center items-center bg-opacity-0 p-10 rounded-lg">
-                   <div className="max-w-[800px] p-5 bg-white text-center shadow-lg rounded-lg mt-[20px] p-10">
-                       <h2 className="text-lg font-bold mb-4">Add Customer</h2>
-                       <form onSubmit={handleAddCustomer} className='h-[740px] '>
-                         <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Customer Id"
-                               value={customerData.Customer_id}
-                               onChange={(e) => setCustomerData({ ...customerData, Customer_id: e.target.value })}
-                               required
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Street"
-                               value={customerData.street}
-                               onChange={(e) => setCustomerData({ ...customerData, street: e.target.value })}
-                               required
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="City"
-                               value={customerData.city}
-                               onChange={(e) => setCustomerData({ ...customerData, city: e.target.value })}
-                               required
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="State"
-                               value={customerData.state}
-                               onChange={(e) => setCustomerData({ ...customerData, state: e.target.value })}
-                               required
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Postal Code"
-                               value={customerData.postal_code}
-                               onChange={(e) => setCustomerData({ ...customerData, postal_code: e.target.value })}
-                               required
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Phone Number"
-                               value={customerData.phone_number}
-                               onChange={(e) => setCustomerData({ ...customerData, phone_number: e.target.value })}
-                               required
-                           />
-                           <input
-                               type="email"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Email"
-                               value={customerData.email}
-                               onChange={(e) => setCustomerData({ ...customerData, email: e.target.value })}
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Customer Type"
-                               value={customerData.customer_type}
-                               onChange={(e) => setCustomerData({ ...customerData, customer_type: e.target.value })}
-                               required
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="First Name"
-                               value={customerData.first_name}
-                               onChange={(e) => setCustomerData({ ...customerData, first_name: e.target.value })}
-                               required
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Last Name"
-                               value={customerData.last_name}
-                               onChange={(e) => setCustomerData({ ...customerData, last_name: e.target.value })}
-                               required
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Driver License"
-                               value={customerData.driver_license}
-                               onChange={(e) => setCustomerData({ ...customerData, driver_license: e.target.value })}
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Business Name"
-                               value={customerData.business_name}
-                               onChange={(e) => setCustomerData({ ...customerData, business_name: e.target.value })}
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Contact Name"
-                               value={customerData.contact_name}
-                               onChange={(e) => setCustomerData({ ...customerData, contact_name: e.target.value })}
-                           />
-                           <input
-                               type="text"
-                               className="w-full mb-2 p-2 border border-gray-300 rounded"
-                               placeholder="Contact Title"
-                               value={customerData.contact_title}
-                               onChange={(e) => setCustomerData({ ...customerData, contact_title: e.target.value })}
-                           />
-                           <div className="flex justify-between mt-4">
-                               <button
-                                   type="submit"
-                                   className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                               >
-                                   Add Customer
-                               </button>
-                               <button
-                                   type="button"
-                                   className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
-                                   onClick={handleCancel}
-                               >
-                                   Cancel
-                               </button>
-                           </div>
-                       </form>
+                   <div className="flex justify-center items-center bg-opacity-0 p-10 rounded-lg">
+                       <div className="max-w-[800px] p-5 bg-white text-center shadow-lg rounded-lg mt-4">
+                           <h2 className="text-lg font-bold mb-4">Add Customer</h2>
+                           <form onSubmit={handleAddCustomer}>
+                             <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Customer Id"
+                                   value={customerData.Customer_id}
+                                   onChange={(e) => setCustomerData({ ...customerData, Customer_id: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Street"
+                                   value={customerData.Street}
+                                   onChange={(e) => setCustomerData({ ...customerData, Street: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="City"
+                                   value={customerData.City}
+                                   onChange={(e) => setCustomerData({ ...customerData, City: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="State"
+                                   value={customerData.State}
+                                   onChange={(e) => setCustomerData({ ...customerData, State: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Postal Code"
+                                   value={customerData.Postal_code}
+                                   onChange={(e) => setCustomerData({ ...customerData, Postal_code: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Phone Number"
+                                   value={customerData.Phone_number}
+                                   onChange={(e) => setCustomerData({ ...customerData, Phone_number: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="email"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Email"
+                                   value={customerData.Email}
+                                   onChange={(e) => setCustomerData({ ...customerData, Email: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Customer Type (Bus/Ind)"
+                                   value={customerData.Customer_type_Bus_Or_Ind}
+                                   onChange={(e) => setCustomerData({ ...customerData, Customer_type_Bus_Or_Ind: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="First Name"
+                                   value={customerData.First_name}
+                                   onChange={(e) => setCustomerData({ ...customerData, First_name: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Last Name"
+                                   value={customerData.Last_name}
+                                   onChange={(e) => setCustomerData({ ...customerData, Last_name: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Driver License"
+                                   value={customerData.Driver_License}
+                                   onChange={(e) => setCustomerData({ ...customerData, Driver_License: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Business Tax ID"
+                                   value={customerData.Business_tax_identification}
+                                   onChange={(e) => setCustomerData({ ...customerData, Business_tax_identification: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Business Name"
+                                   value={customerData.Business_Name}
+                                   onChange={(e) => setCustomerData({ ...customerData, Business_Name: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Contact Name"
+                                   value={customerData.Contact_Name}
+                                   onChange={(e) => setCustomerData({ ...customerData, Contact_Name: e.target.value })}
+                                   required
+                               />
+                               <input
+                                   type="text"
+                                   className="w-full mb-2 p-2 border border-gray-300 rounded"
+                                   placeholder="Contact Title"
+                                   value={customerData.Contact_Title}
+                                   onChange={(e) => setCustomerData({ ...customerData, Contact_Title: e.target.value })}
+                                   required
+                               />
+                               <div className="flex justify-between mt-4">
+                                   <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700">Add Customer</button>
+                                   <button type="button" onClick={handleCancel} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-700">Cancel</button>
+                               </div>
+                           </form>
+                       </div>
                    </div>
-               </div>
-               
                 )}
 
-                {/* Conditionally render SearchResults */}
-                {showResults && <SearchResults results={results} />}
+                {/* Render the SearchResults component if showResults is true */}
+                {showResults && (
+                    <SearchResults results={results} />
+                )}
             </div>
         </div>
     );
