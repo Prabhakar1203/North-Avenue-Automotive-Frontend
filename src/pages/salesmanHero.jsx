@@ -3,8 +3,11 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { FaSearch } from "react-icons/fa";
 import SearchResults from './searchResults'; // Import the new component
+import { useSelector } from 'react-redux';
+import DashboardNavbar from '../components/DashboardNavbar';
 
 function SalesmanHero() {
+    const { user } = useSelector((state) => state.user);
     const [searchedWord, setSearchedWord] = useState('');
     const [searchedCustomer, setSearchedCustomer] = useState('');
     const [results, setResults] = useState([]); // State to hold search results
@@ -145,6 +148,8 @@ function SalesmanHero() {
     
 
     return (
+        <>
+        {/* <DashboardNavbar/>  */}
         <div className="w-full h-full flex items-center justify-center p-4 md:p-10">
             <div className="relative max-w-[1400px] mt-[50px] flex flex-col p-5 mx-auto">
                 <h1 className="text-gray-550 text-3xl text-center font-bold p-5">Welcome to Salesman Page</h1>
@@ -295,7 +300,7 @@ function SalesmanHero() {
                                    placeholder="Business Tax ID"
                                    value={customerData.Business_tax_identification}
                                    onChange={(e) => setCustomerData({ ...customerData, Business_tax_identification: e.target.value })}
-                                   required
+                                   
                                />
                                <input
                                    type="text"
@@ -303,7 +308,7 @@ function SalesmanHero() {
                                    placeholder="Business Name"
                                    value={customerData.Business_Name}
                                    onChange={(e) => setCustomerData({ ...customerData, Business_Name: e.target.value })}
-                                   required
+                                   
                                />
                                <input
                                    type="text"
@@ -311,7 +316,7 @@ function SalesmanHero() {
                                    placeholder="Contact Name"
                                    value={customerData.Contact_Name}
                                    onChange={(e) => setCustomerData({ ...customerData, Contact_Name: e.target.value })}
-                                   required
+                                   
                                />
                                <input
                                    type="text"
@@ -319,7 +324,7 @@ function SalesmanHero() {
                                    placeholder="Contact Title"
                                    value={customerData.Contact_Title}
                                    onChange={(e) => setCustomerData({ ...customerData, Contact_Title: e.target.value })}
-                                   required
+                                   
                                />
                                <div className="flex justify-between mt-4">
                                    <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-700">Add Customer</button>
@@ -336,6 +341,7 @@ function SalesmanHero() {
                 )}
             </div>
         </div>
+        </>
     );
 }
 

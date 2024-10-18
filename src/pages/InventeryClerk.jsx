@@ -4,7 +4,11 @@ import Swal from 'sweetalert2';
 import { FaSearch } from "react-icons/fa";
 import SearchResults from './searchResults'; // Import the new component
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import DashboardNavbar from '../components/DashboardNavbar';
+
 function InventeryClerk() {
+    const { user } = useSelector((state) => state.user);
     const [availableCarsCount, setAvailableCarsCount] = useState(0);
     const [pendingCarsCount, setPendingCarsCount] = useState(0);
     const [unsoldCarsCount, setUnsoldCarsCount] = useState(0);
@@ -389,118 +393,211 @@ function InventeryClerk() {
         setShowVINForm(false);
         setVIN('');
       };
+
+      // update Parts Order Status
+
+      const [Order_id, setOrderId] = useState('');
+      const [Order_line_number, setOrderLineNumber] = useState('');
+      const [Order_status, setOrderStatus] = useState(''); // 'Ordered', 'Received', 'Installed'
+      const [showPartsForm, setShowPartsForm] = useState(false);
+  
+      const handlePartsStatus = () => {
+          setShowPartsForm(!showPartsForm);
+      };
+  
+
+  
+      const handleOrderIdChange = (e) => {
+          setOrderId(e.target.value);
+      };
+  
+      const handleOrderLineNumberChange = (e) => {
+          setOrderLineNumber(e.target.value);
+      };
+  
+      const handleOrderStatusChange = (e) => {
+          setOrderStatus(e.target.value);
+      };
+  
+      const handlePartSubmit = async (e) => {
+        e.preventDefault();
+      
+        try {
+          const response = await axios.post('http://localhost:9004/api/updatingOrderStatus', {
+            Order_id,
+            Order_line_number,
+            Order_status
+          });
+      
+          if (response.status === 200) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success!',
+              text: 'Order Status Updated Successfully',
+            });
+            // Reset form fields after successful submission
+            setOrderId('');
+            setOrderLineNumber('');
+            setOrderStatus('');
+            setShowPartsForm(false); // Close the form after successful submission
+          }
+        } catch (error) {
+          console.error('Error while updating Order Status:', error);
+      
+          // Check if there's a response and handle specific error cases
+          if (error.response) {
+            if (error.response.status === 400) {
+              Swal.fire({
+                icon: 'info',
+                title: 'Not Valid!',
+                text: 'Invalid status transition. Cannot move Reverse',
+              });
+            } else if (error.response.status === 404) {
+              Swal.fire({
+                icon: 'info',
+                title: 'Not Found',
+                text: 'Please Check Order ID and Order Line number!',
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to update Order Status. Please try again later.',
+              });
+            }
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'Something went wrong. Please try again later.',
+            });
+          }
+        }
+      };
+      
+  
+      const handleCanelParts = () => {
+          setShowPartsForm(false);
+          setOrderId('');
+          setOrderLineNumber('');
+          setOrderStatus('');
+         
+      };
+  
+
     return (
-        <div className="w-full h-full flex items-center justify-center p-[400px]">
-            <div className="absolute max-w-[1400px] mt-[150px] flex flex-col p-[50px] mx-auto">
-                <h1 className="text-gray-550 text-3xl text-center font-bold p-5">Welcome to Inventory Clerk Page</h1>
+      <> 
+        {/* <DashboardNavbar/> */}
+      <div className="w-full h-full flex items-center justify-center p-4 lg:p-8 overflow-x-hidden">
+  <div className="relative md:max-w-[1400px] mt-[50px] md:mt-[80px] flex flex-col p-4 sm:p-10 mx-auto w-full">
+      <h1 className="text-gray-550 text-2xl sm:text-3xl text-center font-bold p-5">Welcome to Inventory Clerk Page</h1>
 
-                {!showResults && (
-                    <div className="flex mx-[50px]  mt-5">
-                        <div>
-                            <form onSubmit={handleSearch} className="relative w-full max-w-[450px]">
-                                <input
-                                    className="p-3 w-full border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition-all duration-200"
-                                    type="text"
-                                    value={searchedWord}
-                                    onChange={(e) => setSearchedWord(e.target.value)}
-                                    required
-                                    placeholder="Search a Car"
-                                />
-                                <button type="submit" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-2xl">
-                                    <FaSearch />
-                                </button>
-                            </form>
-                        </div>
+      {!showResults && (
+          <div className="flex flex-col sm:flex-row gap-6 mt-5 w-full">
+              <div className="w-full">
+                  <form onSubmit={handleSearch} className="relative w-full">
+                      <input
+                          className="p-3 w-full border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition-all duration-200"
+                          type="text"
+                          value={searchedWord}
+                          onChange={(e) => setSearchedWord(e.target.value)}
+                          required
+                          placeholder="Search a Car"
+                      />
+                      <button type="submit" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-2xl">
+                          <FaSearch />
+                      </button>
+                  </form>
+              </div>
 
-                        <div className="flex justify-between w-2/3 mx-auto gap-[25px]">
-                            <div>
-                                <form onSubmit={handleCustomer} className="relative w-full max-w-[450px]">
-                                    <input
-                                        className="p-3 w-full border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition-all duration-200"
-                                        type="text"
-                                        value={searchedCustomer}
-                                        onChange={(e) => setSearchedCustomer(e.target.value)}
-                                        required
-                                        placeholder="Search a Customer"
-                                    />
-                                    <button type="submit" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-2xl">
-                                        <FaSearch />
-                                    </button>
-                                </form>
-                            </div>
+              <div className="flex flex-col sm:flex-row gap-6 w-full sm:justify-between">
+                  <div className="w-full">
+                      <form onSubmit={handleCustomer} className="relative w-full">
+                          <input
+                              className="p-3 w-full border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition-all duration-200"
+                              type="text"
+                              value={searchedCustomer}
+                              onChange={(e) => setSearchedCustomer(e.target.value)}
+                              required
+                              placeholder="Search a Customer"
+                          />
+                          <button type="submit" className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-2xl">
+                              <FaSearch />
+                          </button>
+                      </form>
+                  </div>
 
-                            <button
-                                onClick={() => setShowAddVehicleForm(true)}
-                                className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-700"
-                            >
-                                Add a Vehicle
-                            </button>
-                        </div>
-                    </div>
-                )}
+                  <button
+                      onClick={() => setShowAddVehicleForm(true)}
+                      className="w-full sm:w-auto px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-700"
+                  >
+                      Add a Vehicle
+                  </button>
+              </div>
+          </div>
+      )}
 
                  {/* Show the car count dashboard */}
                  <div className='w-full flex items-center justify-center'>
-                    <div className="grid grid-cols-3 gap-6 mb-12 mt-[20px] text-center">
-                        <div className="bg-green-500 text-white p-6 rounded-lg">
-                            <h3 className="text-lg font-semibold">Available Cars</h3>
-                            <p className="text-4xl">{availableCarsCount}</p>
-                        </div>
-                        <div className="bg-yellow-500 text-white p-6 rounded-lg">
-                            <h3 className="text-lg font-semibold">Pending Cars</h3>
-                            <p className="text-4xl">{pendingCarsCount}</p>
-                        </div>
-                        <div className="bg-red-500 text-white p-6 rounded-lg">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-12 mt-[20px] text-center w-full px-4">
+                      <div className="bg-green-500 text-white p-6 rounded-lg">
+                        <h3 className="text-lg font-semibold">Available Cars</h3>
+                        <p className="text-4xl">{availableCarsCount}</p>
+                      </div>
+                      <div className="bg-yellow-500 text-white p-6 rounded-lg">
+                        <h3 className="text-lg font-semibold">Pending Cars</h3>
+                        <p className="text-4xl">{pendingCarsCount}</p>
+                      </div>
+                      <div className="bg-red-500 text-white p-6 rounded-lg">
                         <h3 className="text-lg font-semibold">Unsold Cars</h3>
                         <p className="text-4xl">{unsoldCarsCount}</p>
+                      </div>
                     </div>
-                    </div>
-                </div>
+                  </div>
+                              
 
-            
-
-                <div className='flex flex-col gap-[25px]'>
+                  <div className='flex flex-col gap-[25px]'>
                     <h1 className='text-center text-2xl text-gray-700 font-bold'>
-                        Want to Update Selling Price and See the Items Quantity & Price
+                      Want to Update Selling Price and See the Items Quantity & Price
                     </h1>
 
                     <input
-                        className="p-3 w-1/2 mx-auto border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition-all duration-200"
-                        type='text'
-                        placeholder='Enter VIN to see the Parts Item Cost'
-                        value={vin}
-                        onChange={(e) => setVin(e.target.value)}
+                      className="p-3 w-full lg:w-7/12 mx-auto border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm transition-all duration-200"
+                      type='text'
+                      placeholder='Enter VIN to see the Parts Item Cost'
+                      value={vin}
+                      onChange={(e) => setVin(e.target.value)}
                     />
 
                     <button
-                        className="w-1/4 mx-auto p-3 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition-all duration-200"
-                        onClick={fetchPartsData}
+                      className="w-1/2 lg:w-1/4 mx-auto p-3 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition-all duration-200"
+                      onClick={fetchPartsData}
                     >
-                        Fetch Parts Data
+                      Fetch Parts Data
                     </button>
 
                     {isModalOpen && (
-                        <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
+                      <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
                         <div className='bg-white p-6 rounded-lg shadow-lg w-96'>
-                            <h2 className='text-xl font-semibold text-gray-800'>Parts and Sale Price Information</h2>
-                            <p><strong>VIN:</strong> {partsData.VIN}</p>
-                            <p><strong>Purchase Price:</strong> ${partsData.Purchase_Price}</p>
-                            <p><strong>Part Name:</strong> {partsData.each_part}</p>
-                            <p><strong>Part Cost:</strong> ${partsData.each_part_cost}</p>
-                            <p><strong>Total Parts Cost:</strong> ${partsData.total_cost_of_parts}</p>
-                            <p><strong>Sale Price:</strong> ${partsData.sale_price}</p>
+                          <h2 className='text-xl font-semibold text-gray-800'>Parts and Sale Price Information</h2>
+                          <p><strong>VIN:</strong> {partsData.VIN}</p>
+                          <p><strong>Purchase Price:</strong> ${partsData.Purchase_Price}</p>
+                          <p><strong>Part Name:</strong> {partsData.each_part}</p>
+                          <p><strong>Part Cost:</strong> ${partsData.each_part_cost}</p>
+                          <p><strong>Total Parts Cost:</strong> ${partsData.total_cost_of_parts}</p>
+                          <p><strong>Sale Price:</strong> ${partsData.sale_price}</p>
 
-                            {/* Close button */}
-                            <button
+                          {/* Close button */}
+                          <button
                             className="mt-4 p-2 bg-red-500 text-white rounded-lg w-full"
                             onClick={() => setIsModalOpen(false)}
-                            >
+                          >
                             Close
-                            </button>
+                          </button>
                         </div>
-                        </div>
+                      </div>
                     )}
-                </div>
+                  </div>
 
                
 
@@ -508,7 +605,7 @@ function InventeryClerk() {
            
 
                 {/* // grid for parts orders and vendors */}
-            <div className='grid grid-cols-3 p-4'>
+            <div className='md:grid grid-cols-4 p-4 md:gap-0 gap-10'>
                 {/* // Parts Order Items  */}
                 <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-[20px]">
                     {/* Button to display the form */}
@@ -808,54 +905,133 @@ function InventeryClerk() {
                         </div>
 
                        {/* 3rd grid  */}
-                       <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-[20px]">
-      <div className="flex flex-col gap-[25px] mt-[30px]">
-        <h1 className="text-center text-2xl text-gray-700 font-bold">Update Selling Price</h1>
-        <div className="text-center">
-          <button
-            className="p-4 bg-blue-700 text-white rounded-lg"
-            onClick={handleUpdateClick}
-          >
-            Update
-          </button>
-        </div>
-      </div>
+                      <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-[20px]">
+                        <div className="flex flex-col gap-[25px] mt-[30px]">
+                          <h1 className="text-center text-2xl text-gray-700 font-bold">Update Selling Price</h1>
+                          <div className="text-center">
+                            <button
+                              className="p-4 bg-blue-700 text-white rounded-lg"
+                              onClick={handleUpdateClick}
+                            >
+                              Update
+                            </button>
+                          </div>
+                        </div>
 
-      {/* Form to enter VIN, shown when "Update" is clicked */}
-      {showVINForm && (
-        <div className="mt-8">
-          <form onSubmit={handleVINSubmit}>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">VIN Number</label>
-              <input
-                type="text"
-                value={VIN}
-                onChange={handleVINInputChange}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                required
-              />
+                        {/* Form to enter VIN, shown when "Update" is clicked */}
+                        {showVINForm && (
+                          <div className="mt-8">
+                            <form onSubmit={handleVINSubmit}>
+                              <div className="mb-4">
+                                <label className="block text-sm font-medium text-gray-700">VIN Number</label>
+                                <input
+                                  type="text"
+                                  value={VIN}
+                                  onChange={handleVINInputChange}
+                                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                  required
+                                />
+                              </div>
+
+                              {/* Submit and Cancel buttons */}
+                              <div className="flex justify-between">
+                                <button
+                                  type="submit"
+                                  className="bg-green-500 text-white px-4 py-2 rounded-md shadow"
+                                >
+                                  Submit
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={handleCancelUpdate}
+                                  className="bg-red-500 text-white px-4 py-2 rounded-md shadow"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        )}
+                      </div>
+
+                            {/* 4rd grid  */}
+                            <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-[20px]">
+            <div className="flex flex-col gap-[25px] mt-[30px]">
+                <h1 className="text-center text-2xl text-gray-700 font-bold">Update Parts Status</h1>
+                <div className="text-center">
+                    <button
+                        className="p-4 bg-blue-700 text-white rounded-lg"
+                        onClick={handlePartsStatus}
+                    >
+                        Update
+                    </button>
+                </div>
             </div>
 
-            {/* Submit and Cancel buttons */}
-            <div className="flex justify-between">
-              <button
-                type="submit"
-                className="bg-green-500 text-white px-4 py-2 rounded-md shadow"
-              >
-                Submit
-              </button>
-              <button
-                type="button"
-                onClick={handleCancelUpdate}
-                className="bg-red-500 text-white px-4 py-2 rounded-md shadow"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
+            {/* Form to enter Part Details, shown when "Update" is clicked */}
+            {showPartsForm && (
+                <div className="mt-8">
+                    <form onSubmit={handlePartSubmit}>
+                        {/* Order ID */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700">Order ID</label>
+                            <input
+                                type="text"
+                                value={Order_id}
+                                onChange={handleOrderIdChange}
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                required
+                            />
+                        </div>
+
+                        {/* Order Line Number */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700">Order Line Number</label>
+                            <input
+                                type="number"
+                                value={Order_line_number}
+                                onChange={handleOrderLineNumberChange}
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                required
+                            />
+                        </div>
+
+                        {/* Order Status */}
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700">Order Status</label>
+                            <select
+                                value={Order_status}
+                                onChange={handleOrderStatusChange}
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                required
+                            >
+                                <option value="" disabled>Select Status</option>
+                                <option value="Ordered">Ordered</option>
+                                <option value="Received">Received</option>
+                                <option value="Installed">Installed</option>
+                            </select>
+                        </div>
+
+                        {/* Submit and Cancel buttons */}
+                        <div className="flex justify-between">
+                            <button
+                                type="submit"
+                                className="bg-green-500 text-white px-4 py-2 rounded-md shadow"
+                            >
+                                Submit
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleCanelParts}
+                                className="bg-red-500 text-white px-4 py-2 rounded-md shadow"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
         </div>
-      )}
-    </div>
 
                 </div>
 
@@ -1002,6 +1178,7 @@ function InventeryClerk() {
                 {showResults && <SearchResults results={results} />}
             </div>
         </div>
+        </> 
     );
 }
 

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import DashboardNavbar from '../components/DashboardNavbar';
 
 const SearchResults = ({ results }) => {
+  const { user } = useSelector((state) => state.user);
   const [customerData, setCustomerData] = useState({
     Customer_id: '',
     Username: '',
@@ -66,6 +69,8 @@ const SearchResults = ({ results }) => {
   };
 
   return (
+    <> 
+    {/* <DashboardNavbar/>  */}
     <div className="absolute w-full flex flex-col items-center justify-start bg-gray-100 p-4 mx-4">
       <h3 className="text-lg font-bold mb-4">Search Results</h3>
 
@@ -96,6 +101,7 @@ const SearchResults = ({ results }) => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 // import { setRole } from './userSlice'; // Adjust the path as necessary
 import { useNavigate } from 'react-router-dom';
 import { setUser } from '../redux/features/userSlice';
-
+import Navbar from '../components/Navbar';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -50,6 +50,9 @@ const LoginPage = () => {
   };
 
   return (
+      <>
+          <Navbar/>
+      
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
@@ -95,6 +98,7 @@ const LoginPage = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

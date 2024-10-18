@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import DashboardNavbar from '../components/DashboardNavbar';
 
 function SellerHistory() {
     const [sellers, setSellers] = useState([]);
-
+    const { user } = useSelector((state) => state.user);
     useEffect(() => {
         axios.get('http://localhost:9004/api/getSellerHistory')
             .then(response => setSellers(response.data))
@@ -11,7 +13,10 @@ function SellerHistory() {
     }, []);
 
     return (
-            <div className='max-w-[1400px] mx-auto p-[150px] '>
+        <>
+            <DashboardNavbar/> 
+            <div className='max-w-[1400px] flex flex-col mx-auto p-[150px] '>
+                <h1 className='text-4xl p-4 font-bold text-center  '>Seller History </h1>
               <table className='border-collapse border-0  border-spacing-8 border-slate-400'>
                     <thead>
                         <tr className='bg-slate-300'>
@@ -38,6 +43,7 @@ function SellerHistory() {
                 </table>
 
             </div>
+            </>
     );
 }
 

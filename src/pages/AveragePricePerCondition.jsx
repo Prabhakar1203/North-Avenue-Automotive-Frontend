@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useSelector } from 'react-redux'; 
+import DashboardNavbar from '../components/DashboardNavbar';
 function AveragePricePerCondition() {
     const [averagePrices, setAveragePrices] = useState([]);
-
+    const { user } = useSelector((state) => state.user);
     useEffect(() => {
         const fetchAveragePrices = async () => {
             try {
@@ -18,9 +19,12 @@ function AveragePricePerCondition() {
     }, []);
 
     return (
+        <>
+        <DashboardNavbar/>
         <div>
-            <h1>Average Price Per Condition</h1>
-            <div className='max-w-[1400px] mx-auto flex items-center justify-center  p-[150px] '>
+           
+            <div className='max-w-[1400px] mx-auto flex flex-col items-center justify-center  p-[150px] '>
+                <h1 className='text-4xl p-4 font-bold '>Average Price Per Condition</h1>
                 <table className="border-collapse border-3 border-spacing-8 border-slate-400">
                     <thead>
                         <tr className="bg-slate-300 ">
@@ -45,6 +49,7 @@ function AveragePricePerCondition() {
                 </table>
             </div>
         </div>
+        </>
     );
 }
 

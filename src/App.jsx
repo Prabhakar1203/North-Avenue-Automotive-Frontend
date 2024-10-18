@@ -12,6 +12,10 @@ import AverageTimeInInventory from './pages/AverageInventeryTime';
 import AveragePricePerCondition from './pages/AveragePricePerCondition';
 import PartsStatistics from './pages/PartsStatistics';
 import MonthlySales from './pages/MontlhySales';
+import SalesHistory from './pages/salesHistory';
+import GetCustomers from './pages/getCustomers';
+import GetVendors from './pages/getVendors';
+import GetPendingParts from './pages/getPendingOrderParts';
 // import Dashboard from './pages/Dashboard';
 import PublicRoute from './components/publicRoute';
 import ProtectedRoute from './components/privateRoute';
@@ -20,7 +24,7 @@ function App() {
 
   return (
     <Router>
-      <Navbar /> {/* Public Navbar */}
+     <Navbar />
       <Routes>
         {/* Public Routes */}
         <Route 
@@ -115,6 +119,42 @@ function App() {
           element={
             <ProtectedRoute>
               <MonthlySales />
+            </ProtectedRoute>
+          } 
+        />
+
+      <Route 
+          path="/saleshistory" 
+          element={
+            <ProtectedRoute>
+              <SalesHistory />
+            </ProtectedRoute>
+          } 
+        />
+
+        <Route 
+          path="/getCustomers" 
+          element={
+            <ProtectedRoute>
+              <GetCustomers />
+            </ProtectedRoute>
+          } 
+        />
+
+        <Route 
+          path="/getVendors" 
+          element={
+            <ProtectedRoute>
+              <GetVendors />
+            </ProtectedRoute>
+          } 
+        />
+
+      <Route 
+          path="/getpendingparts" 
+          element={
+            <ProtectedRoute>
+              <GetPendingParts />
             </ProtectedRoute>
           } 
         />
