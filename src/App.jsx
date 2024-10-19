@@ -8,7 +8,7 @@ import Manager from './pages/manager';
 import SalesmanHero from './pages/salesmanHero';
 import Owner from './pages/owner';
 import SellerHistory from './pages/SellerHistory';
-import AverageTimeInInventory from './pages/AverageInventeryTime';
+import AverageTimeInInventory from './pages/AverageInventeryTime'
 import AveragePricePerCondition from './pages/AveragePricePerCondition';
 import PartsStatistics from './pages/PartsStatistics';
 import MonthlySales from './pages/MontlhySales';

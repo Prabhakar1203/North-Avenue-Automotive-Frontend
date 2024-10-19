@@ -109,7 +109,7 @@ function Manager() {
 
     return (
         <>
-         {/* <DashboardNavbar/>  */}
+         <DashboardNavbar/> 
             <div className="w-full h-full flex items-center justify-center p-5 md:p-[200px] p-[270px]">
                 <div className="absolute max-w-[1400px] mx-auto mt-[150px] flex flex-col p-5">
                     <h1 className="text-gray-550 text-3xl text-center font-bold p-5">Welcome to Manager Page</h1>

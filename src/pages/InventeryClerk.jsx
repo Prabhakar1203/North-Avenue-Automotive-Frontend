@@ -487,7 +487,7 @@ function InventeryClerk() {
 
     return (
       <> 
-        {/* <DashboardNavbar/> */}
+        <DashboardNavbar/>
       <div className="w-full h-full flex items-center justify-center p-4 lg:p-8 overflow-x-hidden">
   <div className="relative md:max-w-[1400px] mt-[50px] md:mt-[80px] flex flex-col p-4 sm:p-10 mx-auto w-full">
       <h1 className="text-gray-550 text-2xl sm:text-3xl text-center font-bold p-5">Welcome to Inventory Clerk Page</h1>

@@ -33,6 +33,10 @@ function Dashboard(){
         });
       }
     };
+    useEffect(() => {
+      getCustomerInfo();
+      //eslint-disable-next-line
+    }, []);
     return(
         <>
    
