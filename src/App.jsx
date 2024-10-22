@@ -8,7 +8,7 @@ import Manager from './pages/manager';
 import SalesmanHero from './pages/salesmanHero';
 import Owner from './pages/owner';
 import SellerHistory from './pages/SellerHistory';
-import AverageTimeInInventory from './pages/AverageInventeryTime'
+import AverageTimeInventery from './pages/AverageTimeInventery';
 import AveragePricePerCondition from './pages/AveragePricePerCondition';
 import PartsStatistics from './pages/PartsStatistics';
 import MonthlySales from './pages/MontlhySales';
@@ -16,6 +16,10 @@ import SalesHistory from './pages/salesHistory';
 import GetCustomers from './pages/getCustomers';
 import GetVendors from './pages/getVendors';
 import GetPendingParts from './pages/getPendingOrderParts';
+import PublicPage from './pages/PublicPage';
+import OwnerToInventery from './pages/ownerToInventery';
+import OwnerToSalesman from './pages/ownerToSalesman';
+import OwnerToManager from './pages/ownerToManager';
 // import Dashboard from './pages/Dashboard';
 import PublicRoute from './components/publicRoute';
 import ProtectedRoute from './components/privateRoute';
@@ -24,9 +28,19 @@ function App() {
 
   return (
     <Router>
-     <Navbar />
+     {/* <PublicPage /> */}
       <Routes>
         {/* Public Routes */}
+
+        <Route 
+          path="/" 
+          element={
+            <PublicRoute>
+              <PublicPage />
+            </PublicRoute>
+          } 
+        />
+
         <Route 
           path="/login" 
           element={
@@ -91,7 +105,7 @@ function App() {
           path="/averagetimeinventery" 
           element={
             <ProtectedRoute>
-              <AverageTimeInInventory />
+              <AverageTimeInventery />
             </ProtectedRoute>
           } 
         />
@@ -155,6 +169,33 @@ function App() {
           element={
             <ProtectedRoute>
               <GetPendingParts />
+            </ProtectedRoute>
+          } 
+        />
+
+      <Route 
+          path="/onwertoinventery" 
+          element={
+            <ProtectedRoute>
+              <OwnerToInventery />
+            </ProtectedRoute>
+          } 
+        />
+
+      <Route 
+          path="/onwertosalesman" 
+          element={
+            <ProtectedRoute>
+              <OwnerToSalesman />
+            </ProtectedRoute>
+          } 
+        />
+
+      <Route 
+          path="/onwertomanager" 
+          element={
+            <ProtectedRoute>
+              <OwnerToManager />
             </ProtectedRoute>
           } 
         />

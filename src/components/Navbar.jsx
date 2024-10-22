@@ -56,7 +56,7 @@ const Navbar = () => {
       <div className="w-full h-[90px] mx-auto max-w-[1400px] flex justify-between items-center">
         <div className="flex justify-between items-center w-full px-4">
         <div className="text-center">
-            <Link to={'/home'}>
+            <Link to={'/'}>
                 <h2 className="font-bold text-green-600 text-[30px]">
                 {/* For small screens, display vertically; for medium and larger, display inline */}
                 <span className="block  md:inline">North</span> {/* Vertical on small, inline on medium+ */}

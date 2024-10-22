@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import DashboardNavbar from '../components/DashboardNavbar';
-function AverageTimeInInventory() {
+function AverageTimeInventery() {
     const { user } = useSelector((state) => state.user);
     const [inventoryData, setInventoryData] = useState([]);
 
     useEffect(() => {
+   
         axios.get('http://localhost:9004/api/getAverageTimeInInventory')
             .then(response => setInventoryData(response.data))
             .catch(error => console.error('Error fetching average time in inventory:', error));
-    }, []);
+        }
+        , []);
 
+    
     return (
         <>
         <DashboardNavbar/>
@@ -39,4 +42,4 @@ function AverageTimeInInventory() {
     );
 }
 
-export default AverageTimeInInventory;
+export default AverageTimeInventery;

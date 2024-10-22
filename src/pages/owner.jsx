@@ -12,17 +12,17 @@ function Owner() {
         <div className="grid grid-cols-1 gap-8 md:w-full w-[450px] md:p-[20px] p-[50px] md:grid-cols-3 mx-2"> {/* Full width with mx-2 for small screens */}
           <div className="p-6 bg-gray-200 rounded-lg shadow-lg hover:bg-slate-500 hover:shadow-xl hover:text-white transition-all duration-300">
             
-            <Link to="/inventoryClerk" className="block h-full">Go to Inventory Clerk Page</Link>
+            <Link to="/onwertoinventery" className="block h-full">Go to Inventory Clerk Page</Link>
           </div>
 
           <div className="p-6 bg-gray-200 rounded-lg shadow-lg hover:bg-slate-500 hover:shadow-xl hover:text-white transition-all duration-300">
       
-            <Link to="/salesman" className="block h-full">Go to Salesman Page</Link>
+            <Link to="/onwertosalesman" className="block h-full">Go to Salesman Page</Link>
           </div>
 
           <div className="p-6 bg-gray-200 rounded-lg shadow-lg hover:bg-slate-500 hover:shadow-xl hover:text-white transition-all duration-300">
         
-            <Link to="/manager" className="block h-full">Go to Manager Page</Link>
+            <Link to="/onwertomanager" className="block h-full">Go to Manager Page</Link>
           </div>
         </div>
       </div>

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { FaSearch } from "react-icons/fa";
-import SearchResults from './searchResults'; // Import the new component
+// import SearchResults from './searchResults'; // Import the new component
+import SearchResultsSalesman from './searchResultsSalesman';
 import { useSelector } from 'react-redux';
 import DashboardNavbar from '../components/DashboardNavbar';
 
@@ -136,7 +137,7 @@ function SalesmanHero() {
             console.error("Error adding customer:", error);
             Swal.fire({
                 icon: 'error',
-                title: 'Add Failed',
+                title: 'Adding Failed',
                 text: error.response?.data?.message || 'An error occurred while adding the customer.',
             });
         }
@@ -149,7 +150,7 @@ function SalesmanHero() {
 
     return (
         <>
-        <DashboardNavbar/> 
+        {/* <DashboardNavbar/>  */}
         <div className="w-full h-full flex items-center justify-center p-4 md:p-10">
             <div className="relative max-w-[1400px] mt-[50px] flex flex-col p-5 mx-auto">
                 <h1 className="text-gray-550 text-3xl text-center font-bold p-5">Welcome to Salesman Page</h1>
@@ -337,7 +338,7 @@ function SalesmanHero() {
 
                 {/* Render the SearchResults component if showResults is true */}
                 {showResults && (
-                    <SearchResults results={results} />
+                    <SearchResultsSalesman results={results} />
                 )}
             </div>
         </div>

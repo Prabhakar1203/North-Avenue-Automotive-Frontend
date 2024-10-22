@@ -2,23 +2,21 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'; // React Router for navigation
-import DashboardNavbar from '../components/DashboardNavbar';
 
-const SearchResults = ({ results }) => {
+const SearchResultsSalesman = ({ results }) => {
   const { user } = useSelector((state) => state.user);
-  const navigate = useNavigate(); // React Router's navigation hook
-
   const [customerData, setCustomerData] = useState({
     Customer_id: '',
     Username: '',
     Selling_Price: '',
     Sold_date: new Date().toISOString().split('T')[0], // Default to current date
   });
+  const [isVisible, setIsVisible] = useState(true); // State to control visibility
 
   const handleSellClick = async (vehicle) => {
     const { VIN, Selling_Price } = vehicle;
 
+    // Show Swal input form for customer details
     const { value: formValues } = await Swal.fire({
       title: 'Enter Sale Details',
       html: `
@@ -40,15 +38,17 @@ const SearchResults = ({ results }) => {
 
     if (formValues) {
       try {
+        // Send the data to sell the car, matching the backend's expected keys
         const response = await axios.post('http://localhost:9004/api/sellConfirmation', {
           Customer_id: formValues.Customer_id,
           Username: formValues.Username,
           Selling_Price: formValues.Selling_Price,
           Sold_date: formValues.Sold_date,
-          VIN,
+          VIN, // Pass the vehicle VIN
         });
 
         if (response.data.message === "Car successfully sold and vehicle data updated") {
+          // Show success message for the sale operation
           Swal.fire({
             icon: 'success',
             title: 'Success!',
@@ -58,6 +58,7 @@ const SearchResults = ({ results }) => {
           throw new Error('Failed to sell the car');
         }
       } catch (error) {
+        console.error('Error during car sale:', error);
         Swal.fire({
           icon: 'error',
           title: 'Error!',
@@ -68,15 +69,19 @@ const SearchResults = ({ results }) => {
   };
 
   const handleClose = () => {
-    // Navigate back to the previous page or home
-    navigate(-1); // Go back to the previous page
+    setIsVisible(false); // Hide the content when the close button is clicked
   };
+
+  if (!isVisible) {
+    return null; // Return nothing when content is hidden
+  }
 
   return (
     <>
-      <div className="absolute w-full flex flex-col items-center justify-start bg-gray-100 p-4 mx-4">
+      <div className="fixed inset-0 w-full flex flex-col items-center justify-start bg-gray-100 p-4 mx-4 md:p-[200px] p-[150px]">
         <h3 className="text-lg font-bold mb-4">Search Results</h3>
 
+        {/* Full-screen flex container with a responsive grid layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 w-full max-w-screen-xl max-h-[500px] overflow-y-auto">
           {results.map((vehicle) => (
             <div
@@ -92,29 +97,26 @@ const SearchResults = ({ results }) => {
               <p><strong>Fuel:</strong> {vehicle.Fuel_type}</p>
               <p><strong>Color:</strong> {vehicle.Color}</p>
               <p><strong>Price:</strong> ${vehicle.Selling_Price ? vehicle.Selling_Price.toLocaleString() : 'N/A'}</p>
-              <p className="text-red-600 text-center font-semibold">Want to buy? Please Contact Salesman</p>
-              {/* Uncomment if you want the Sell button */}
-              {/* <button
+              <button
                 type="button"
-                onClick={() => handleSellClick(vehicle)}
+                onClick={() => handleSellClick(vehicle)} // Trigger the sell function on button click
                 className="w-full px-4 py-2 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 transition duration-300"
               >
                 Sell
-              </button> */}
+              </button>
             </div>
           ))}
         </div>
 
-        {/* Close button */}
-        <button
+        {/* <button
           onClick={handleClose}
           className="mt-4 px-4 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-600 transition duration-300"
         >
           Close
-        </button>
+        </button> */}
       </div>
     </>
   );
 };
 
-export default SearchResults;
+export default SearchResultsSalesman;

@@ -57,7 +57,9 @@ function InventeryClerk() {
           console.log(response.data);
           if (response.data) {
             setPartsData(response.data);
+            // setVIN(vin);
             setIsModalOpen(true);
+
           } else {
             Swal.fire({
               icon: 'info',
@@ -221,78 +223,162 @@ function InventeryClerk() {
 
     //  parts and items
     const [orderDetails, setOrderDetails] = useState({
-        Order_id: '',
-        VIN: '',
-        Vendor_id: '',
-      });
-    
-      const [parts, setParts] = useState([]);
-      const [showForm, setShowForm] = useState(false); // State to control form visibility
-    
-      const handleOrderDetailsChange = (e) => {
-        setOrderDetails({ ...orderDetails, [e.target.name]: e.target.value });
+      Order_id: '',
+      VIN: '',
+      Vendor_id: '',
+    });
+  
+    const [orderIds, setOrderIDs] = useState([]); // To store Order IDs
+    const [vendorIDs, setVendorIDs] = useState([]); // To store Vendor IDs
+    const [VINs, setVINs] = useState([]); // To store VINs
+    const [parts, setParts] = useState([]);
+    const [showForm, setShowForm] = useState(false); // To control form visibility
+    const [CustomerID, setCustomerId] = useState([]);
+    const [EmployeeID, setEmployeeId] = useState([]);
+    // const [getOrderIds, setOrderIds] = useState([]);
+    // const [getPartNumbers, setPartNumbers] = useState([]);
+
+    console.log(CustomerID);
+    // Fetch data for Order IDs, Vendor IDs, and VINs from backend APIs
+    useEffect(() => {
+      // const fetchOrderIDs = async () => {
+      //   try {
+      //     const response = await axios.get('http://localhost:9004/api/getOrderId');
+      //     setOrderIDs(response.data); // Assuming response.data is an array of Order IDs
+      //   } catch (error) {
+      //     console.error('Error fetching order IDs:', error);
+      //   }
+      // };
+     
+      const fetchVendorIDs = async () => {
+        try {
+          const response = await axios.get('http://localhost:9004/api/getVendorsID');
+          setVendorIDs(response.data); // Assuming response.data is an array of Vendor IDs
+        } catch (error) {
+          console.error('Error fetching vendor IDs:', error);
+        }
       };
-    
-      const handlePartChange = (index, e) => {
-        const updatedParts = [...parts];
-        updatedParts[index][e.target.name] = e.target.value;
-        setParts(updatedParts);
+  
+      const fetchVINs = async () => {
+        try {
+          const response = await axios.get('http://localhost:9004/api/getVIN');
+          setVINs(response.data); // Assuming response.data is an array of VINs
+        } catch (error) {
+          console.error('Error fetching VINs:', error);
+        }
+        
       };
-    
-      const addPart = () => {
-        setParts([
-          ...parts,
-          {
-            Order_line_number: '',
-            Purchase_order_number: '',
-            Order_status: 'Ordered',
-            Part_unit_price: '',
-            Part_quantity: '',
-            Part_description: '',
-          },
-        ]);
-      };
-    
-      const removePart = (index) => {
-        const updatedParts = parts.filter((_, partIndex) => partIndex !== index);
-        setParts(updatedParts);
-      };
-    
-      // Handle form submission
-      const handleSubmit = async (e) => {
-        e.preventDefault();
-    
-        Swal.fire({
-          title: 'Are you sure?',
-          text: 'You are about to submit the order!',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, submit it!',
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            try {
-              const response = await axios.post('http://localhost:9004/api/partOrderDetailsWithItems', {
-                ...orderDetails,
-                parts,
-              });
-              Swal.fire('Success!', response.data.message, 'success');
-            } catch (error) {
-              Swal.fire('Error!', 'Failed to submit order.', 'error');
-            }
-          }
-        });
-      };
-    
-      // Toggle form visibility when the button is clicked
-      const handleOrderButtonClick = () => {
-        setShowForm(true); // Display the form
+      
+      const fetchCustomerIDs = async () => {
+        try {
+          const response = await axios.get('http://localhost:9004/api/getCustomerID');
+          setCustomerId(response.data); // Assuming response.data is an array of Vendor IDs
+        } catch (error) {
+          console.error('Error fetching vendor IDs:', error);
+        }
       };
 
-      const handleCloseForm = () => {
-        setShowForm(false); // Hide the form
+      const fetchEmployeeIDs = async () => {
+        try {
+          const response = await axios.get('http://localhost:9004/api/getEmployeeID');
+          setEmployeeId(response.data); // Assuming response.data is an array of Vendor IDs
+        } catch (error) {
+          console.error('Error fetching vendor IDs:', error);
+        }
       };
+
+      // const fetchOrderIds = async () => {
+      //   try {
+      //     const response = await axios.get('http://localhost:9004/api/getEmployeeID');
+      //     setOrderIds(response.data); // Assuming response.data is an array of Vendor IDs
+      //   } catch (error) {
+      //     console.error('Error fetching vendor IDs:', error);
+      //   }
+      // };
+
+      // const fetchPartNumber = async () => {
+      //   try {
+      //     const response = await axios.get('http://localhost:9004/api/getEmployeeID');
+      //     setPartNumbers(response.data); // Assuming response.data is an array of Vendor IDs
+      //   } catch (error) {
+      //     console.error('Error fetching vendor IDs:', error);
+      //   }
+      // };
+
+
+      // Fetch all required data when component mounts
+      // fetchOrderIDs();
+      fetchVendorIDs();
+      fetchVINs();
+      fetchCustomerIDs();
+      fetchEmployeeIDs();
+      // fetchOrderIds();
+      // fetchPartNumber();
+    }, []);
+  
+    const handleOrderDetailsChange = (e) => {
+      setOrderDetails({ ...orderDetails, [e.target.name]: e.target.value });
+    };
+  
+    const handlePartChange = (index, e) => {
+      const updatedParts = [...parts];
+      updatedParts[index][e.target.name] = e.target.value;
+      setParts(updatedParts);
+    };
+  
+    const addPart = () => {
+      setParts([
+        ...parts,
+        {
+          Order_line_number: '',
+          Purchase_order_number: '',
+          Order_status: 'Ordered',
+          Part_unit_price: '',
+          Part_quantity: '',
+          Part_description: '',
+        },
+      ]);
+    };
+  
+    const removePart = (index) => {
+      const updatedParts = parts.filter((_, partIndex) => partIndex !== index);
+      setParts(updatedParts);
+    };
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to submit the order!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, submit it!',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await axios.post('http://localhost:9004/api/partOrderDetailsWithItems', {
+              ...orderDetails,
+              parts,
+            });
+            Swal.fire('Success!', response.data.message, 'success');
+          } catch (error) {
+            const errorMessage = error.response?.data?.message || 'Failed to submit order.';
+           Swal.fire('Error!', errorMessage, 'error');
+          }
+        }
+      });
+    };
+  
+    const handleOrderButtonClick = () => {
+      setShowForm(true); // Show the form
+    };
+  
+    const handleCloseForm = () => {
+      setShowForm(false); // Hide the form
+    };
 
 
       // Adding Vendors
@@ -338,10 +424,9 @@ function InventeryClerk() {
     
 
       // Updating selling price
-
       const [showVINForm, setShowVINForm] = useState(false);
       const [VIN, setVIN] = useState('');
-      const [sellingPrice, setSellingPrice] = useState('');
+      const [vinNumbers, setVinNumbers] = useState([]);
     
       // Show the VIN form when the Update button is clicked
       const handleUpdateClick = () => {
@@ -360,7 +445,7 @@ function InventeryClerk() {
         try {
           // Call API to update selling price directly with VIN
           const response = await axios.post('http://localhost:9004/api/UpdateSellingPrice', {
-            VIN
+            VIN,
           });
     
           if (response.data.message === 'Selling price updated successfully') {
@@ -369,7 +454,8 @@ function InventeryClerk() {
               title: 'Success!',
               text: 'Selling price updated successfully!',
             });
-            // Optionally, reset the form or the state here
+            setVIN('');
+            setShowVINForm(false);
           } else {
             Swal.fire({
               icon: 'error',
@@ -387,6 +473,23 @@ function InventeryClerk() {
         }
       };
     
+      // Fetch VIN numbers from the API
+      const fetchVinNumbers = async () => {
+        try {
+          const response = await axios.get('http://localhost:9004/api/getVINNumbersForUpdatingPrice');
+          setVinNumbers(response.data); // Assuming response.data contains an array of VIN numbers
+        } catch (error) {
+          console.error('Error fetching VIN numbers:', error);
+        }
+      };
+    
+      // Fetch VIN numbers when the component mounts
+      useEffect(() => {
+        fetchVinNumbers();
+      }, []);
+    
+      // Cancel the update operation
+      
     
       // Cancel the update operation
       const handleCancelUpdate = () => {
@@ -394,30 +497,56 @@ function InventeryClerk() {
         setVIN('');
       };
 
+
       // update Parts Order Status
+  const [Order_id, setOrderId] = useState('');
+  const [part_number, setPartNumber] = useState('');
+  const [Order_status, setOrderStatus] = useState(''); // 'Ordered', 'Received', 'Installed'
+  const [getOrderIds, setOrderIds] = useState([]);
+  const [getPartNumbers, setPartNumbers] = useState([]);
+  const [showPartsForm, setShowPartsForm] = useState(false);
+  // const [showPartsForm, setShowPartsForm] = useState(false);
+  
+  const handlePartsStatus = () => {
+      setShowPartsForm(!showPartsForm);
+  }
+  // Fetch Order IDs
+  const fetchOrderIds = async () => {
+    try {
+      const response = await axios.get('http://localhost:9004/api/getOrderIds'); // Ensure the correct endpoint
+      setOrderIds(response.data); // Assuming response.data is an array of Order IDs
+    } catch (error) {
+      console.error('Error fetching order IDs:', error);
+    }
+  };
 
-      const [Order_id, setOrderId] = useState('');
-      const [Order_line_number, setOrderLineNumber] = useState('');
-      const [Order_status, setOrderStatus] = useState(''); // 'Ordered', 'Received', 'Installed'
-      const [showPartsForm, setShowPartsForm] = useState(false);
-  
-      const handlePartsStatus = () => {
-          setShowPartsForm(!showPartsForm);
-      };
-  
+  // Fetch Part Numbers
+  const fetchPartNumbers = async () => {
+    try {
+      const response = await axios.get('http://localhost:9004/api/getPartNumbers'); // Ensure the correct endpoint
+      setPartNumbers(response.data); // Assuming response.data is an array of Part Numbers
+    } catch (error) {
+      console.error('Error fetching part numbers:', error);
+    }
+  };
 
-  
-      const handleOrderIdChange = (e) => {
-          setOrderId(e.target.value);
-      };
-  
-      const handleOrderLineNumberChange = (e) => {
-          setOrderLineNumber(e.target.value);
-      };
-  
-      const handleOrderStatusChange = (e) => {
-          setOrderStatus(e.target.value);
-      };
+  useEffect(() => {
+    fetchOrderIds();
+    fetchPartNumbers();
+  }, []);
+
+  const handleOrderIdChange = (e) => {
+    setOrderId(e.target.value);
+  };
+
+  const handlePartNumberChange = (e) => {
+    setPartNumber(e.target.value);
+  };
+
+  const handleOrderStatusChange = (e) => {
+    setOrderStatus(e.target.value);
+  };
+
   
       const handlePartSubmit = async (e) => {
         e.preventDefault();
@@ -425,7 +554,7 @@ function InventeryClerk() {
         try {
           const response = await axios.post('http://localhost:9004/api/updatingOrderStatus', {
             Order_id,
-            Order_line_number,
+            part_number,
             Order_status
           });
       
@@ -437,7 +566,7 @@ function InventeryClerk() {
             });
             // Reset form fields after successful submission
             setOrderId('');
-            setOrderLineNumber('');
+            setPartNumber('');
             setOrderStatus('');
             setShowPartsForm(false); // Close the form after successful submission
           }
@@ -479,15 +608,16 @@ function InventeryClerk() {
       const handleCanelParts = () => {
           setShowPartsForm(false);
           setOrderId('');
-          setOrderLineNumber('');
+          setPartNumber('');
           setOrderStatus('');
          
       };
-  
+
+   
 
     return (
       <> 
-        <DashboardNavbar/>
+        {/* <DashboardNavbar/> */}
       <div className="w-full h-full flex items-center justify-center p-4 lg:p-8 overflow-x-hidden">
   <div className="relative md:max-w-[1400px] mt-[50px] md:mt-[80px] flex flex-col p-4 sm:p-10 mx-auto w-full">
       <h1 className="text-gray-550 text-2xl sm:text-3xl text-center font-bold p-5">Welcome to Inventory Clerk Page</h1>
@@ -637,29 +767,45 @@ function InventeryClerk() {
                             />
                         </div>
 
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">VIN</label>
-                            <input
-                            type="text"
-                            name="VIN"
-                            value={orderDetails.VIN}
-                            onChange={handleOrderDetailsChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                            required
-                            />
-                        </div>
+          
 
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Vendor ID</label>
-                            <input
-                            type="text"
-                            name="Vendor_id"
-                            value={orderDetails.Vendor_id}
-                            onChange={handleOrderDetailsChange}
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                            required
-                            />
-                        </div>
+          {/* VIN Dropdown */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">VIN</label>
+            <select
+              name="VIN"
+              value={orderDetails.VIN}
+              onChange={handleOrderDetailsChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              required
+            >
+              <option value="" disabled>Select VIN</option>
+              {VINs.map((vin) => (
+                <option key={vin.VIN} value={vin.VIN}>
+                  {vin.VIN}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Vendor ID Dropdown */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">Vendor ID</label>
+            <select
+              name="Vendor_id"
+              value={orderDetails.Vendor_id}
+              onChange={handleOrderDetailsChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+              required
+            >
+              <option value="" disabled>Select Vendor ID</option>
+              {vendorIDs.map((vendor) => (
+                <option key={vendor.Vendor_id} value={vendor.Vendor_id}>
+                  {vendor.Vendor_id}
+                </option>
+              ))}
+            </select>
+          </div>
 
                         {/* Parts Section */}
                         <h2 className="text-xl font-semibold mb-4">Parts</h2>
@@ -905,54 +1051,61 @@ function InventeryClerk() {
                         </div>
 
                        {/* 3rd grid  */}
-                      <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-[20px]">
-                        <div className="flex flex-col gap-[25px] mt-[30px]">
-                          <h1 className="text-center text-2xl text-gray-700 font-bold">Update Selling Price</h1>
-                          <div className="text-center">
-                            <button
-                              className="p-4 bg-blue-700 text-white rounded-lg"
-                              onClick={handleUpdateClick}
-                            >
-                              Update
-                            </button>
-                          </div>
-                        </div>
+                       <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-[20px]">
+  <div className="flex flex-col gap-[25px] mt-[30px]">
+    <h1 className="text-center text-2xl text-gray-700 font-bold">Update Selling Price</h1>
+    <div className="text-center">
+      <button
+        className="p-4 bg-blue-700 text-white rounded-lg"
+        onClick={handleUpdateClick}
+      >
+        Update
+      </button>
+    </div>
+  </div>
 
-                        {/* Form to enter VIN, shown when "Update" is clicked */}
-                        {showVINForm && (
-                          <div className="mt-8">
-                            <form onSubmit={handleVINSubmit}>
-                              <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">VIN Number</label>
-                                <input
-                                  type="text"
-                                  value={VIN}
-                                  onChange={handleVINInputChange}
-                                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                                  required
-                                />
-                              </div>
+  {/* Form to select VIN, shown when "Update" is clicked */}
+  {showVINForm && (
+    <div className="mt-8">
+      <form onSubmit={handleVINSubmit}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">VIN Number</label>
+          <select
+            value={VIN}
+            onChange={handleVINInputChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            required
+          >
+            <option value="" disabled>Select VIN</option>
+            {vinNumbers.map((vin) => (
+              <option key={vin.VIN} value={vin.VIN}>
+                {vin.VIN}
+              </option>
+            ))}
+          </select>
+        </div>
 
-                              {/* Submit and Cancel buttons */}
-                              <div className="flex justify-between">
-                                <button
-                                  type="submit"
-                                  className="bg-green-500 text-white px-4 py-2 rounded-md shadow"
-                                >
-                                  Submit
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={handleCancelUpdate}
-                                  className="bg-red-500 text-white px-4 py-2 rounded-md shadow"
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        )}
-                      </div>
+        {/* Submit and Cancel buttons */}
+        <div className="flex justify-between">
+          <button
+            type="submit"
+            className="bg-green-500 text-white px-4 py-2 rounded-md shadow"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            onClick={handleCancelUpdate}
+            className="bg-red-500 text-white px-4 py-2 rounded-md shadow"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  )}
+</div>
+
 
                             {/* 4rd grid  */}
                             <div className="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md mt-[20px]">
@@ -973,7 +1126,8 @@ function InventeryClerk() {
                 <div className="mt-8">
                     <form onSubmit={handlePartSubmit}>
                         {/* Order ID */}
-                        <div className="mb-4">
+
+                        {/* <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">Order ID</label>
                             <input
                                 type="text"
@@ -982,20 +1136,43 @@ function InventeryClerk() {
                                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                                 required
                             />
-                        </div>
+                        </div> */}
+ <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Order ID</label>
+        <select
+          name="getOrderIds"
+          value={Order_id}
+          onChange={handleOrderIdChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+          required
+        >
+          <option value="" disabled>Select Order ID</option>
+          {getOrderIds.map((Order) => (
+            <option key={Order.order_id} value={Order.order_id}>
+              {Order.order_id}
+            </option>
+          ))}
+        </select>
+      </div>
 
-                        {/* Order Line Number */}
-                        <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">Order Line Number</label>
-                            <input
-                                type="number"
-                                value={Order_line_number}
-                                onChange={handleOrderLineNumberChange}
-                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-                                required
-                            />
-                        </div>
-
+      {/* Part Number Dropdown */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Part Number</label>
+        <select
+          name="getPartNumbers"
+          value={part_number}
+          onChange={handlePartNumberChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+          required
+        >
+          <option value="" disabled>Select Part Number</option>
+          {getPartNumbers.map((Part) => (
+            <option key={Part.part_number} value={Part.part_number}>
+              {Part.part_number}
+            </option>
+          ))}
+        </select>
+      </div>
                         {/* Order Status */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">Order Status</label>
@@ -1113,14 +1290,27 @@ function InventeryClerk() {
                                     onChange={(e) => setVehicleData({ ...vehicleData, Additional_description: e.target.value })}
                                     required
                                 />
-                                <input
-                                    type="text"
-                                    className="w-full mb-2 p-2 border border-gray-300 rounded"
-                                    placeholder="Bought from Customer ID"
-                                    value={vehicleData.Bought_from_customer_id}
-                                    onChange={(e) => setVehicleData({ ...vehicleData, Bought_from_customer_id: e.target.value })}
-                                    required
-                                />
+
+
+<div className="mb-4">
+    {/* <label className="block text-sm font-medium text-gray-700">Bought from Customer ID</label> */}
+    <select
+        name="Bought_from_customer_id"
+        value={vehicleData.Bought_from_customer_id}
+        onChange={(e) => setVehicleData({ ...vehicleData, Bought_from_customer_id: e.target.value })}
+        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+        required
+    >
+        <option value="" disabled>Select Customer ID</option>
+        {CustomerID.map((customer) => (
+            <option key={customer.id} value={customer.id} className='text-green-700'>
+                {customer.Customer_id}
+            </option>
+        ))}
+    </select>
+</div>
+
+
                                 <input
                                     type="date"
                                     className="w-full mb-2 p-2 border border-gray-300 rounded"
@@ -1128,22 +1318,63 @@ function InventeryClerk() {
                                     onChange={(e) => setVehicleData({ ...vehicleData, Purchase_date: e.target.value })}
                                     required
                                 />
-                                <input
+
+
+                                {/* <input
                                     type="text"
                                     className="w-full mb-2 p-2 border border-gray-300 rounded"
                                     placeholder="Purchased by Employee"
                                     value={vehicleData.Purchased_by_employee}
                                     onChange={(e) => setVehicleData({ ...vehicleData, Purchased_by_employee: e.target.value })}
                                     required
-                                />
-                                <input
+                                /> */}
+
+                                
+<div className="mb-4">
+    {/* <label className="block text-sm font-medium text-gray-700">Bought from Customer ID</label> */}
+    <select
+        name="Purchased_by_employee"
+        value={vehicleData.Purchased_by_employee}
+        onChange={(e) => setVehicleData({ ...vehicleData, Purchased_by_employee: e.target.value })}
+        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+        required
+    >
+        <option value="" disabled>Select Employee ID</option>
+        {EmployeeID.map((customer) => (
+            <option key={customer.id} value={customer.id} className='text-green-700'>
+                {customer.Username}
+            </option>
+        ))}
+    </select>
+</div>
+                                {/* <input
                                     type="text"
                                     className="w-full mb-2 p-2 border border-gray-300 rounded"
                                     placeholder="Updated by Employee"
                                     value={vehicleData.Updated_by_employee}
                                     onChange={(e) => setVehicleData({ ...vehicleData, Updated_by_employee: e.target.value })}
                                     required
-                                />
+                                /> */}
+
+                             
+<div className="mb-4">
+    {/* <label className="block text-sm font-medium text-gray-700">Bought from Customer ID</label> */}
+    <select
+        name="Updated_by_employee"
+        value={vehicleData.Updated_by_employee}
+        onChange={(e) => setVehicleData({ ...vehicleData, Updated_by_employee: e.target.value })}
+        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+        required
+    >
+        <option value="" disabled>Select Updating Employee ID</option>
+        {EmployeeID.map((customer) => (
+            <option key={customer.id} value={customer.id} className='text-green-700'>
+                {customer.Username}
+            </option>
+        ))}
+    </select>
+</div>
+
                                 <input
                                     type="text"
                                     className="w-full mb-2 p-2 border border-gray-300 rounded"

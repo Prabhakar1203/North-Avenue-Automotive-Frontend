@@ -22,7 +22,7 @@ const DashboardNavbar = () => {
 
   const ownerMenu = [
     { name: "Seller History", path: "/sellerhistory", icon: <FaHome /> },
-    { name: "Average Time Inventory", path: "/averagetimeinventory", icon: <FaHome /> },
+    { name: "Average Time Inventory", path: "/averagetimeinventery", icon: <FaHome /> },
     { name: "Average Price Per Condition", path: "/averagepricepercondition", icon: <FaHome /> },
     { name: "Parts Statistics", path: "/partsstatistics", icon: <FaHome /> },
     { name: "Monthly Sales", path: "/monthlysales", icon: <FaHome /> }
@@ -30,7 +30,7 @@ const DashboardNavbar = () => {
 
   const managerMenu = [
     { name: "Seller History", path: "/sellerhistory", icon: <FaHome /> },
-    { name: "Average Time Inventory", path: "/averagetimeinventory", icon: <FaHome /> },
+    { name: "Average Time Inventory", path: "/averagetimeinventery", icon: <FaHome /> },
     { name: "Average Price Per Condition", path: "/averagepricepercondition", icon: <FaHome /> },
     { name: "Parts Statistics", path: "/partsstatistics", icon: <FaHome /> },
     { name: "Monthly Sales", path: "/monthlysales", icon: <FaHome /> }
